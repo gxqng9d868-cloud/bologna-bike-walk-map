@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></// --- NEW: Search Bar Logic ---
+const geocoder = L.Control.geocoder({
+  defaultMarkGeocode: false,
+  placeholder: "Search for a street in Bologna...",
+})
+  .on('markgeocode', function(e) {
+    const bbox = e.geocode.bbox;
+    const poly = L.polygon([
+      bbox.getSouthEast(),
+      bbox.getNorthEast(),
+      bbox.getNorthWest(),
+      bbox.getSouthWest()
+    ]);
+    map.fitBounds(poly.getBounds());
+    
+    // Add a temporary marker to the searched spot
+    L.marker(e.geocode.center).addTo(map)
+      .bindPopup(e.geocode.name).openPopup();
+  })
+  .addTo(map);
+
+
+
+
+
